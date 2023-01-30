@@ -1,4 +1,4 @@
-# Class Libriry e xUnit Test usada como exemplo na construção de testes unitários
+# Class Library e xUnit Test usada como exemplo na construção de testes unitários
 
 Baseado no curso Dominando os Testes de Software, Dominando os Testes de Software.
 
