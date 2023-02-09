@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using Xunit;
 
-namespace Features.Tests._06___AutoMock
+namespace Features.Tests
 {
     [Collection(nameof(ClienteBogusCollection))]
 
