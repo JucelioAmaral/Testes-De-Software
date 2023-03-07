@@ -25,12 +25,13 @@ git clone https://github.com/JucelioAmaral/Testes-De-Software.git
 
 Testes básicos:
 
-![Testes.jpg]!(Testes)
+![Testes]!(Testes.jpg)
+
 
 Testes usando: Bogus, MOQ, AutoMock, FluentAssertions e Skip:
 
-![TestesDiversos.jpg]!(Testes Diversos)
+![Testes Diversos]!(TestesDiversos.jpg)
 
 ComandoParaTestesPeloCMD:
 
-![ComandoParaTestesPeloCMD.jpg]!(Comandos para testes pelo cmd)
+![Comandos para testes pelo cmd]!(ComandoParaTestesPeloCMD.jpg)
