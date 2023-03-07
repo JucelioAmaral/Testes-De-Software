@@ -32,6 +32,6 @@ Testes usando: Bogus, MOQ, AutoMock, FluentAssertions e Skip:
 
 ![Testes Diversos](TestesDiversos.jpg)
 
-ComandoParaTestesPeloCMD:
+Comando para testes pelo CMD:
 
 ![Comandos para testes pelo cmd](ComandoParaTestesPeloCMD.jpg)
