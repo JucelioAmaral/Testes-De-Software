@@ -80,10 +80,10 @@ namespace Vendas.Domain
             return _pedidoItems.Any(p => p.ProdutoId == item.ProdutoId);
         }
 
-        //private void ValidarPedidoItemInexistente(PedidoItem item)
-        //{
-        //    if (!PedidoItemExistente(item)) throw new DomainException("O item não pertence ao pedido");
-        //}
+        private void ValidarPedidoItemInexistente(PedidoItem item)
+        {
+            if (!PedidoItemExistente(item)) throw new DomainException("O item não pertence ao pedido");
+        }
 
         private void ValidarQuantidadeItemPermitida(PedidoItem item)
         {
@@ -99,7 +99,7 @@ namespace Vendas.Domain
 
         public void AdicionarItem(PedidoItem pedidoItem)
         {
-            if (pedidoItem.Quantidade > MAX_UNIDADES_ITEM) throw new DomainException($"Maximo de {MAX_UNIDADES_ITEM} unidades por porduto.");            
+            if (pedidoItem.Quantidade > MAX_UNIDADES_ITEM) throw new DomainException($"Maximo de {MAX_UNIDADES_ITEM} unidades por Produto.");            
 
             ValidarQuantidadeItemPermitida(pedidoItem);
 
@@ -118,7 +118,7 @@ namespace Vendas.Domain
 
         public void AtualizarItem(PedidoItem pedidoItem)
         {
-            //ValidarPedidoItemInexistente(pedidoItem);
+            ValidarPedidoItemInexistente(pedidoItem);
             ValidarQuantidadeItemPermitida(pedidoItem);
 
             var itemExistente = PedidoItems.FirstOrDefault(p => p.ProdutoId == pedidoItem.ProdutoId);
