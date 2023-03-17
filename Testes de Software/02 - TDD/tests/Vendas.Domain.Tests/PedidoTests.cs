@@ -109,7 +109,7 @@ namespace Vendas.Domain.Tests
             var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
             var produtoId = Guid.NewGuid();
             var pedidoItemExistente1 = new PedidoItem(Guid.NewGuid(), "Produto Teste", 2, 100);
-            var pedidoItemExistente2 = new PedidoItem(produtoId, "Produto Teste",3, 15);
+            var pedidoItemExistente2 = new PedidoItem(produtoId, "Produto Teste", 3, 15);
             pedido.AdicionarItem(pedidoItemExistente1);
             pedido.AdicionarItem(pedidoItemExistente2);
 
@@ -130,9 +130,9 @@ namespace Vendas.Domain.Tests
         {
             //Arrange
             var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
-            var produtoId = Guid.NewGuid();            
+            var produtoId = Guid.NewGuid();
             var pedidoItemExistente1 = new PedidoItem(produtoId, "Produto Teste", 3, 15);
-            pedido.AdicionarItem(pedidoItemExistente1);            
+            pedido.AdicionarItem(pedidoItemExistente1);
 
             var pedidoItemAtualizado = new PedidoItem(produtoId, "Produto Teste", Pedido.MAX_UNIDADES_ITEM + 1, 15);
 
@@ -146,7 +146,7 @@ namespace Vendas.Domain.Tests
         {
             //Arrange
             var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
-            var pedidoItemRemover = new PedidoItem(Guid.NewGuid(), "Produto Teste", 5, 100);            
+            var pedidoItemRemover = new PedidoItem(Guid.NewGuid(), "Produto Teste", 5, 100);
 
             //Act & Assert
             Assert.Throws<DomainException>(() => pedido.RemoverItem(pedidoItemRemover));
@@ -171,6 +171,87 @@ namespace Vendas.Domain.Tests
 
             // Assert
             Assert.Equal(totalPedido, pedido.ValorTotal);
+        }
+
+        [Fact(DisplayName = "Aplicar voucher válido")]
+        [Trait("Categoria", "Vendas - Pedido")]
+        public void Pedido_AplicarVoucherValido_DeveRetornarSemErro()
+        {
+            //Arrange
+            var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
+            var voucher = new Voucher("PROMO-15-YEAR", null, 15, 1,
+                TipoDescontoVoucher.Valor, DateTime.Now.AddDays(15), true, false);
+
+            //Act
+            var result = pedido.AplicarVoucher(voucher);
+
+            //Assert
+            Assert.True(result.IsValid);
+        }
+
+        [Fact(DisplayName = "Aplicar voucher Inválido")]
+        [Trait("Categoria", "Vendas - Pedido")]
+        public void Pedido_AplicarVoucherValido_DeveRetornarComErros()
+        {
+            //Arrange
+            var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
+            var voucher = new Voucher("PROMO-15-YEAR", null, 15, 1,
+                TipoDescontoVoucher.Valor, DateTime.Now.AddDays(-1), true, true);
+
+            //Act
+            var result = pedido.AplicarVoucher(voucher);
+
+            //Assert
+            Assert.False(result.IsValid);
+        }
+
+        [Fact(DisplayName = "Aplicar voucher tipo valor desconto")]
+        [Trait("Categoria", "Vendas - Pedido")]
+        public void AplicarVoucher_VoucherTipoValorDesconto_DeveDescontarDoValorTotal()
+        {
+            //Arrange
+            var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
+            var pedidoItem1 = new PedidoItem(Guid.NewGuid(), "Produto xpto", 2, 100);
+            var pedidoItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste", 3, 15);
+            pedido.AdicionarItem(pedidoItem1);
+            pedido.AdicionarItem(pedidoItem2);
+
+            var voucher = new Voucher("PROMO-15-YEAR", null, 15, 1,
+                          TipoDescontoVoucher.Valor, DateTime.Now.AddDays(10), true, false);
+
+            var valorComDesconto = pedido.ValorTotal - voucher.ValorDesconto;
+
+            //Act
+            pedido.AplicarVoucher(voucher);
+
+            //Assert
+            Assert.Equal(valorComDesconto, pedido.ValorTotal);
+
+        }
+
+        [Fact(DisplayName = "Aplicar voucher tipo percentual desconto")]
+        [Trait("Categoria", "Vendas - Pedido")]
+        public void AplicarVoucher_VoucherTipoPercentualDesconto_DeveDescontarDoValorTotal()
+        {
+            //Arrange
+            var pedido = Pedido.PedidoFactory.NovoPedidoRascunho(Guid.NewGuid());
+
+            var pedidoItem1 = new PedidoItem(Guid.NewGuid(), "Produto xpto", 2, 100);
+            var pedidoItem2 = new PedidoItem(Guid.NewGuid(), "Produto Teste", 3, 15);
+            pedido.AdicionarItem(pedidoItem1);
+            pedido.AdicionarItem(pedidoItem2);
+
+            var voucher = new Voucher("PROMO-15-YEAR", 15, null, 1,
+                          TipoDescontoVoucher.Porcentagem, DateTime.Now.AddDays(10), true, false);
+
+            var valorDesconto = (pedido.ValorTotal * voucher.PercentualDesconto) / 100;
+            var valorTotalComDesconto = pedido.ValorTotal - valorDesconto;
+
+            //Act
+            pedido.AplicarVoucher(voucher);
+
+            //Assert
+            Assert.Equal(valorTotalComDesconto, pedido.ValorTotal);
         }
     }
 }
