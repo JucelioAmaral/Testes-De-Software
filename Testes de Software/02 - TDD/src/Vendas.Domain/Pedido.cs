@@ -131,7 +131,7 @@ namespace Vendas.Domain
 
         public void RemoverItem(PedidoItem pedidoItem)
         {
-            //ValidarPedidoItemInexistente(pedidoItem);
+            ValidarPedidoItemInexistente(pedidoItem);
 
             _pedidoItems.Remove(pedidoItem);
 

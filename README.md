@@ -28,7 +28,7 @@ Testes básicos:
 ![Testes](Testes.jpg)
 
 
-Testes usando: Bogus, MOQ, AutoMock, FluentAssertions e Skip:
+Testes usando: Bogus, MOQ (Mock), AutoMock, FluentAssertions e Skip:
 
 ![Testes Diversos](TestesDiversos.jpg)
 
