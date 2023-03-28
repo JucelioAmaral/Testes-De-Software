@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="fluentvalidation" Version="11.5.1" />
-    <PackageReference Include="MediatR" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Vendas.Domain\Vendas.Domain.csproj" />
   </ItemGroup>
 
 </Project>
