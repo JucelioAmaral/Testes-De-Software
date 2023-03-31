@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Core.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Vendas.Domain
 {
-    public interface IPedidoRepository //: IRepository<Pedido>
+    public interface IPedidoRepository : IRepository<Pedido>
     {
         //Task<IEnumerable<Pedido>> ObterListaPorClienteId(Guid clienteId);
         //Task<Pedido> ObterPedidoRascunhoPorClienteId(Guid clienteId);
